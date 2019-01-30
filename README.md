@@ -29,7 +29,7 @@ $ npm start
 For updating the bundle in production mode, run:
 
 ```
-$ npm start
+$ npm run build
 ```
 
 It commpiles the scripts and styles and the scripts inside ./dist/bundle.js
