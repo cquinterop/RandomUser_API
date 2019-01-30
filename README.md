@@ -32,7 +32,7 @@ For updating the bundle in production mode, run:
 $ npm run build
 ```
 
-It commpiles the scripts and styles and the scripts inside ./dist/bundle.js
+It commpiles styles and scripts inside the ./dist/bundle.js file
 
 ## Built With
 
