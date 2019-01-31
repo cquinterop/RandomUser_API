@@ -10,37 +10,46 @@ class UI {
         const wrapper = document.getElementById('wrapper'),
             article = document.createElement('article'),
             img = document.createElement('img'),
-            span = document.createElement('span'),
-            p = document.createElement('p')
+            h5 = document.createElement('h5')
 
         wrapper.appendChild(article)
         article.appendChild(img)
-        article.appendChild(span)
-        span.appendChild(p)
+        article.appendChild(h5)
 
-        article.setAttribute('class', 'card col-6 col-md-4')
-        img.setAttribute('class', 'card-img-top')
-        span.setAttribute('class', 'card-body')
-        p.setAttribute('class', 'card-text')
+        article.setAttribute('class', 'card col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 p-4')
+        img.setAttribute('class', 'card-img-top rounded-top')
+        h5.setAttribute('class', 'text-capitalize mt-2')
 
         img.src = person.picture
-        p.innerHTML = person.name
+        h5.innerText = person.name
     }
 }
 
-window.addEventListener('load', () => {
-    fetch('https://randomuser.me/api/?key=04HA-DCYA-ZX83-1OD7&results=20')
+
+const get_api = (num) => {
+    fetch(`https://randomuser.me/api/?results=${num}`)
         .then(resp => resp.json())
         .then((data) => {
-            data.results.forEach((element) => {
-                let person_picture = element.picture.large,
-                person_name = `${element.name.first} ${element.name.last}`
+            data.results.forEach((el) => {
+                const person_picture = el.picture.large,
+                    person_name = `${el.name.first} ${el.name.last}`
 
-                const person = new Person(person_picture, person_name)
-                const ui = new UI()
-    
+                const person = new Person(person_picture, person_name),
+                    ui = new UI()
+
                 ui.newCard(person)
-
             })
         })
-})
+}
+
+
+document.getElementById('amount_form')
+    .addEventListener('submit', (e) => {
+        wrapper.innerHTML = ""
+        const amount = document.getElementById('amount').value
+
+        get_api(amount)
+
+        e.preventDefault()
+    })
+
