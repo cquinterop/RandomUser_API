@@ -1,4 +1,6 @@
-const path = require('path');
+const path = require('path'),
+      HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
   entry: {
@@ -11,7 +13,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.m?js$/,
+        test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
@@ -28,7 +30,16 @@ module.exports = {
           "sass-loader"
         ],
         exclude: /node_modules/
+      },
+      {
+        test: /\.pug$/,
+        use: ['html-loader', 'pug-html-loader']
       }
-    ] 
-  }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.pug'
+    })
+  ]
 }

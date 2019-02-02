@@ -54,4 +54,3 @@ document.getElementById('amount_form')
 
         e.preventDefault()
     })
-
