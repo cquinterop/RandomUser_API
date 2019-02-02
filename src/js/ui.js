@@ -30,7 +30,7 @@ const get_api = (num) => {
     fetch(`https://randomuser.me/api/?results=${num}`)
         .then(resp => resp.json())
         .then((data) => {
-            data.results.forEach((el) => {
+            data.results.forEach((el, i) => {
                 const person_picture = el.picture.large,
                     person_name = `${el.name.first} ${el.name.last}`
 
@@ -45,7 +45,9 @@ const get_api = (num) => {
 
 document.getElementById('amount_form')
     .addEventListener('submit', (e) => {
-        wrapper.innerHTML = ""
+        while(wrapper.firstChild){
+            wrapper.removeChild(wrapper.firstChild)
+        }
         const amount = document.getElementById('amount').value
 
         get_api(amount)
