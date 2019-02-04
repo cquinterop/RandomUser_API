@@ -1,5 +1,5 @@
 doctype html
-html(lang='en') 
+html(lang='en')
     head
         meta(charset='UTF-8')
         meta(name='viewport' content='width=device-width, initial-scale=1.0')
@@ -7,7 +7,26 @@ html(lang='en')
         title Random User Generator
         // BOOTSTRAP
         link(rel='stylesheet' href='https://bootswatch.com/4/flatly/bootstrap.min.css')
+        // CUSTOM STYLES
     body
         include ./pug/navbar
         main.container
-            section#wrapper.card-columns.row
+            section#wrapper.row
+        include ./pug/footer
+
+        template
+            .overlay
+            .cst-modal
+                .modal-dialog.modal-dialog-centered
+                    .modal-content
+                        .modal-header
+                            h4#name.text-capitalize
+                            button#close.close(type='button') &times;
+                        .modal-body
+                            img#picture.card-img-top
+                            ul.mt-3
+                                li#gender.text-capitalize
+                                li#age
+                                li#city.text-capitalize
+                                li#phone
+                                li#email

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-You need to have installed in your computer
+You need to have in your computer:
 
 * Node - NPM
 
@@ -19,7 +19,7 @@ $ npm install
 
 ## Running the tests
 
-For SASS and Javascript, dev files are located into the ./src folder
+For sass, pug and Javascript, dev files are located into the ./src folder
 
 For updating the bundle in development mode, run:
 
@@ -32,10 +32,12 @@ For updating the bundle in production mode, run:
 $ npm run build
 ```
 
-It commpiles styles and scripts inside the ./dist/bundle.js file
+It commpiles html, styles and scripts inside the ./dist folder
 
 ## Built With
 
+* [nodejs](https://nodejs.org)
 * [Webpack](https://github.com/webpack/webpack)
-* [Babel](https://babeljs.io/)
+* [Babel](https://babeljs.io)
 * [node-sass](https://github.com/sass/node-sass)
+* [pugjs](https://github.com/pugjs/pug)
