@@ -21,15 +21,15 @@ $ npm install
 
 For sass, pug and Javascript, dev files are located into the ./src folder
 
+For creating the distribution files, run:
+
+```
+$ npm run build
+```
 For updating the bundle in development mode, run:
 
 ```
 $ npm start
-```
-For updating the bundle in production mode, run:
-
-```
-$ npm run build
 ```
 
 It commpiles html, styles and scripts inside the ./dist folder
