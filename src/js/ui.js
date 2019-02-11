@@ -1,35 +1,55 @@
-const wrapper = document.querySelector('.wrapper')
+// NOSTALGIC JQUERY SELECTOR
+
+const $ = (sel) => document.querySelector(sel),
+    $$ = (sel) => document.querySelectorAll(sel)
+
+// GLOBAL VARIABLES
+
+const wrapper = $('.wrapper'),
+    loader = $(".loader")
 
 // DOM MANIPULATION
 
 class UI {
-    createTag(tagName, attributes, parent, content) {
+    createTag(tagName, attributes) {
         const tag = document.createElement(tagName)
-
         for (let [key, value] of Object.entries(attributes)) {
             tag.setAttribute(key, value)
-            tag.textContent = content
-            parent.appendChild(tag)
         }
         return tag
     }
+    appendElements(parent, children) {
+        for (let elements of children.values()) {
+            parent.appendChild(elements)
+        }
+    }
     newCard(person) {
-        const card = this.createTag('article', { 'class': 'card col-12 col-sm-6 col-md-4 col-lg-3 p-4' }, wrapper),
-        cardImg = this.createTag('img', { 'class': 'card-img-top', 'src': person.picture.large }, card),
-        cardName = this.createTag('h5', { 'class': 'text-capitalize mt-2' }, card, `${person.name.first} ${person.name.last}`)
+        const card = this.createTag('article', {
+            'class': 'card col-12 col-sm-6 col-md-4 col-lg-3 p-4'
+        }),
+            cardImg = this.createTag('img', {
+                'class': 'card-img-top',
+                'src': person.picture.large
+            }),
+            cardName = this.createTag('h5', {
+                'class': 'text-capitalize mt-2'
+            })
 
-        card.addEventListener('click', () => {
-            this.modal(person)
-        })
+        cardName.textContent = `${person.name.first} ${person.name.last}`
+
+        this.appendElements(card, [cardImg, cardName])
+        this.appendElements(wrapper, [card])
+
+        card.addEventListener('click', () => this.modal(person))
     }
     getTemplate(sel, obj) {
-        let temp = document.querySelector(sel),
+        let temp = $(sel),
             clon = temp.content.cloneNode(true)
-            document.body.appendChild(clon)
+        document.body.appendChild(clon)
 
         let el
         for (let [key, value] of Object.entries(obj)) {
-            el = document.querySelector(key)
+            el = $(key)
             el.textContent = value
         }
         return el
@@ -45,12 +65,12 @@ class UI {
             '.email': person.email
         })
 
-        document.querySelector('.picture').src = person.picture.large
+        $('.picture').src = person.picture.large
 
         // CLOSE MODAL
-        document.querySelector('.close')
+        $('.close')
             .addEventListener('click', () => {
-                document.querySelector('.overlay')
+                $('.overlay')
                     .remove()
             })
     }
@@ -74,19 +94,24 @@ const get_api = num => {
             arr.forEach((arr) => {
                 ui.newCard(arr)
             })
+            loader.style.display = "none"
+        })
+        .catch(error => {
+            console.log(error)
+            loader.style.display = "none"
         })
 }
 
 // EVENT LISTENERS
 
-window.addEventListener('load', () => {
-    get_api(12)
-})
+window.addEventListener('load', () => get_api(12))
 
-document.querySelector('.amount_form')
+$('.amount_form')
     .addEventListener('submit', e => {
         e.preventDefault()
-        const amount = document.querySelector('.amount').value
-        amount > 0 ? get_api(amount) : alert('Please enter a number greater than or equal to 1')
+        const amount = $('.amount').value
         ui.clearContent(wrapper)
+        get_api(amount)
+
+        loader.style.display = "flex"
     })
