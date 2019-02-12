@@ -1,16 +1,16 @@
 // NOSTALGIC JQUERY SELECTOR
 
-const $ = (sel) => document.querySelector(sel),
-    $$ = (sel) => document.querySelectorAll(sel)
+const $ = (selector) => document.querySelector(selector)
+const $$ = (selector) => document.querySelectorAll(selector)
 
 // GLOBAL VARIABLES
 
-const wrapper = $('.wrapper'),
-    loader = $(".loader")
+const wrapper = $('.wrapper')
+const loader = $(".loader")
 
 // DOM MANIPULATION
 
-class UI {
+class UserInterface {
     createTag(tagName, attributes) {
         const tag = document.createElement(tagName)
         for (let [key, value] of Object.entries(attributes)) {
@@ -18,7 +18,7 @@ class UI {
         }
         return tag
     }
-    appendElements(parent, children) {
+    appendChildren(parent, children) {
         for (let elements of children.values()) {
             parent.appendChild(elements)
         }
@@ -26,33 +26,33 @@ class UI {
     newCard(person) {
         const card = this.createTag('article', {
             'class': 'card col-12 col-sm-6 col-md-4 col-lg-3 p-4'
-        }),
-            cardImg = this.createTag('img', {
-                'class': 'card-img-top',
-                'src': person.picture.large
-            }),
-            cardName = this.createTag('h5', {
-                'class': 'text-capitalize mt-2'
-            })
+        })
+        const cardImg = this.createTag('img', {
+            'class': 'card-img-top',
+            'src': person.picture.large
+        })
+        const cardName = this.createTag('h5', {
+            'class': 'text-capitalize mt-2'
+        })
 
         cardName.textContent = `${person.name.first} ${person.name.last}`
 
-        this.appendElements(card, [cardImg, cardName])
-        this.appendElements(wrapper, [card])
+        this.appendChildren(card, [cardImg, cardName])
+        wrapper.appendChild(card)
 
         card.addEventListener('click', () => this.modal(person))
     }
-    getTemplate(sel, obj) {
-        let temp = $(sel),
-            clon = temp.content.cloneNode(true)
+    getTemplate(selector, object) {
+        let template = $(selector)
+        let clon = template.content.cloneNode(true)
         document.body.appendChild(clon)
 
-        let el
-        for (let [key, value] of Object.entries(obj)) {
-            el = $(key)
-            el.textContent = value
+        let element
+        for (let [key, value] of Object.entries(object)) {
+            element = $(key)
+            element.textContent = value
         }
-        return el
+        return element
     }
     modal(person) {
         // OPEN MODAL
@@ -68,32 +68,26 @@ class UI {
         $('.picture').src = person.picture.large
 
         // CLOSE MODAL
-        $('.close')
-            .addEventListener('click', () => {
-                $('.overlay')
-                    .remove()
-            })
+        $('.close').addEventListener('click', () => $('.overlay').remove())
     }
-    clearContent(el) {
-        while (el.firstChild) {
-            el.removeChild(el.firstChild)
+    clearContent(element) {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild)
         }
     }
 }
 
 // DATA QUERIES
 
-const ui = new UI()
+const userInterface = new UserInterface()
 
-const get_api = num => {
-    fetch(`https://randomuser.me/api/?results=${num}`)
-        .then(resp => resp.json())
+const makeRequest = number => {
+    fetch(`https://randomuser.me/api/?results=${number}`)
+        .then(response => response.json())
         .then(data => {
-            let arr = data.results
+            let array = data.results
+            array.forEach(array => userInterface.newCard(array))
 
-            arr.forEach((arr) => {
-                ui.newCard(arr)
-            })
             loader.style.display = "none"
         })
         .catch(error => {
@@ -104,14 +98,14 @@ const get_api = num => {
 
 // EVENT LISTENERS
 
-window.addEventListener('load', () => get_api(12))
+window.addEventListener('load', () => makeRequest(12))
 
-$('.amount_form')
-    .addEventListener('submit', e => {
-        e.preventDefault()
-        const amount = $('.amount').value
-        ui.clearContent(wrapper)
-        get_api(amount)
+$('.amount_form').addEventListener('submit', e => {
+    e.preventDefault()
 
-        loader.style.display = "flex"
-    })
+    const amount = $('.amount').value
+    userInterface.clearContent(wrapper)
+    makeRequest(amount)
+
+    loader.style.display = "flex"
+})
