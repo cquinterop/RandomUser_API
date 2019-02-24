@@ -6,7 +6,7 @@ const $$ = (selector) => document.querySelectorAll(selector)
 // GLOBAL VARIABLES
 
 const wrapper = $('.wrapper')
-const loader = $(".loader")
+const loader = $('.loader')
 
 // DOM MANIPULATION
 
@@ -56,6 +56,8 @@ class UserInterface {
     }
     modal(person) {
         // OPEN MODAL
+        $('body').classList.add('overflow-hidden')
+
         this.getTemplate('.modal', {
             '.name': `${person.name.first} ${person.name.last}`,
             '.gender': person.gender,
@@ -64,11 +66,13 @@ class UserInterface {
             '.phone': person.phone,
             '.email': person.email
         })
-
         $('.picture').src = person.picture.large
 
         // CLOSE MODAL
-        $('.close').addEventListener('click', () => $('.overlay').remove())
+        $('.close').addEventListener('click', () => {
+            $('.overlay').remove()
+            $('body').classList.remove('overflow-hidden')
+        })
     }
     clearContent(element) {
         while (element.firstChild) {
@@ -88,11 +92,11 @@ const makeRequest = number => {
             let array = data.results
             array.forEach(array => userInterface.newCard(array))
 
-            loader.style.display = "none"
+            loader.style.display = 'none'
         })
         .catch(error => {
             console.log(error)
-            loader.style.display = "none"
+            loader.style.display = 'none'
         })
 }
 
@@ -107,5 +111,5 @@ $('.amount_form').addEventListener('submit', e => {
     userInterface.clearContent(wrapper)
     makeRequest(amount)
 
-    loader.style.display = "flex"
+    loader.style.display = 'flex'
 })
